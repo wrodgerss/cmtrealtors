@@ -5,10 +5,11 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, SoftDeletingTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -16,8 +17,15 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'email', 'password', 'role'
     ];
+
+    /**
+     * The attribute that casts dates and timestamps to Carbon date instance.
+     * 
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
 
     /**
      * The attributes that should be hidden for arrays.
