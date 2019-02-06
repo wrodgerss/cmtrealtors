@@ -17,11 +17,15 @@ class StaffRepository
     public function save($data)
     {
         $user = User::create([
-            'email' => $data->email,
-            'role' => $data->role,
+            'email' => $data['email'],
+            'role' => $data['role'],
             'password' => Hash::make('secret')
         ]);
 
-        $user->staff()->create( $data->all() );
+        $user->staff()->create([
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
+            'phone' => $data['phone']
+        ]);
     }
 }
