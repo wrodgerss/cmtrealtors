@@ -6,14 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reply extends Model
 {
-    private $fillable = ['feedback_id', 'user_id', 'body', 'created_at'];
+    protected $fillable = ['feedback_id', 'user_id', 'body', 'created_at'];
 
     public $timestamps = false;
 
-    public function getDates()
-    {
-        return array('created_at');
-    }
+    protected $dates = ['created_at'];
 
     public function user()
     {

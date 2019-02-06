@@ -3,15 +3,28 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Task extends Model
 {
-    private $fillable = ['user_id', 'title', 'description'];
+    use SoftDeletes;
 
-    protected $dates = ['deleted_at'];
+    protected $fillable = ['user_id', 'title', 'description', 'deadline', 'status'];
+
+    protected $dates = ['deleted_at', 'deadline'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function taskLogs()
+    {
+        return $this->hasMany(TaskLog::class);
+    }
+
+    public function property()
+    {
+        return $this->belongsTo(Property::class);
     }
 }

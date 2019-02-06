@@ -6,14 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Feedback extends Model
 {
-    private $fillable = ['tasklog_id', 'user_id', 'body', 'created_at'];
+    protected $fillable = ['tasklog_id', 'user_id', 'body', 'created_at'];
 
     public $timestamps = false;
 
-    public function getDates()
-    {
-        return array('created_at');
-    }
+    protected $dates = ['created_at'];
+
+    protected $table = 'feedbacks';
 
     public function user()
     {
@@ -23,5 +22,10 @@ class Feedback extends Model
     public function taskLog()
     {
         return $this->belongsTo(TaskLog::class);
+    }
+
+    public function replies()
+    {
+        return $this->hasMany(Reply::class);
     }
 }

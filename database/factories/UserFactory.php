@@ -15,10 +15,29 @@ use Faker\Generator as Faker;
 
 $factory->define(App\User::class, function (Faker $faker) {
     return [
-        'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
         'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
         'remember_token' => str_random(10),
     ];
+});
+
+$factory->state(App\User::class, 'admin', [
+    'role' => 'admin',
+]);
+
+$factory->state(App\User::class, 'project_manager', [
+    'role' => 'project_manager',
+]);
+
+$factory->state(App\User::class, 'team_member', [
+    'role' => 'team_member',
+]);
+
+$factory->afterCreating(App\User::class, function ($user, $faker) {
+    $user->staff()->save(factory(App\Staff::class)->make());
+});
+
+$factory->afterCreatingState(App\User::class, 'project_manager', function ($user, $faker) {
+    $user->tasks()->saveMany(factory(App\Task::class, 2)->make());
 });

@@ -16,12 +16,16 @@ class CreateTasksTable extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id')->nullable();
+            $table->unsignedInteger('property_id');
             $table->string('title');
+            $table->enum('status', ['open', 'ongoing', 'closed']);
+            $table->date('deadline');
             $table->text('description')->nullable();
             $table->timestamps();
             $table->softdeletes();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('property_id')->references('id')->on('properties')->onDelete('cascade');
         });
     }
 

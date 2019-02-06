@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TaskLog extends Model
 {
-    private $fillable = ['user_id', 'task_id', 'job_description', 'deadline'];
+    protected $fillable = ['user_id', 'task_id', 'job_description', 'deadline'];
 
     public function task()
     {
@@ -16,5 +16,10 @@ class TaskLog extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function feedbacks()
+    {
+        return $this->hasMany(Feedback::class);
     }
 }
