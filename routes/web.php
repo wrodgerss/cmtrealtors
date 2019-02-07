@@ -13,6 +13,8 @@
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->middleware('guest');
 
 Route::resource('staff', 'StaffController');
+
+Auth::routes(['register' => false]);
