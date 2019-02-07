@@ -35,4 +35,34 @@ class StaffService
     {
         $this->staffRepository->save($user);
     }
+
+    /**
+     * Load a user account.
+     * @param $id
+     * @return \App\User
+     */
+    public function fetch($id)
+    {
+        return $this->staffRepository->get($id);
+    }
+
+    /**
+     * Change user account details.
+     * @param $id
+     * @param $data
+     */
+    public function edit($id, $data)
+    {
+        $this->staffRepository->update($id, $data);
+    }
+
+    /**
+     * Delete user account.
+     * @param $id
+     * @throws \Exception
+     */
+    public function remove($id)
+    {
+        $this->staffRepository->delete($id);
+    }
 }
