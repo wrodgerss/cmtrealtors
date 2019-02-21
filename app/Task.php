@@ -13,7 +13,7 @@ class Task extends Model
 
     protected $dates = ['deleted_at', 'deadline'];
 
-    public function user()
+    public function projectManager()
     {
         return $this->belongsTo(User::class);
     }

@@ -15,6 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 })->middleware('guest');
 
-Route::resource('staff', 'StaffController');
+Route::middleware(['auth'])->group(function () {
+
+    Route::resource('staff', 'StaffController');
+});
 
 Auth::routes(['register' => false]);

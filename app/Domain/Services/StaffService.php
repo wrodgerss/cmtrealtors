@@ -14,13 +14,14 @@ use App\Domain\Repositories\StaffRepository;
 class StaffService
 {
     /**
-     * @var StaffRepository
+     * @var \App\Domain\Repositories\StaffRepository
      */
     private $staffRepository;
 
     /**
      * StaffService constructor.
-     * @param StaffRepository $staffRepository
+     *
+     * @param \App\Domain\Repositories\StaffRepository $staffRepository
      */
     public function __construct(StaffRepository $staffRepository)
     {
@@ -29,15 +30,18 @@ class StaffService
 
     /**
      * Create staff account.
-     * @param $user
+     *
+     * @param $id
+     * @param array $user
      */
-    public function create($user)
+    public function create($id, $user)
     {
-        $this->staffRepository->save($user);
+        $this->staffRepository->save(array_merge($user, ['user_id' => $id]));
     }
 
     /**
      * Load a user account.
+     *
      * @param $id
      * @return \App\User
      */
@@ -48,6 +52,7 @@ class StaffService
 
     /**
      * Change user account details.
+     *
      * @param $id
      * @param $data
      */
@@ -58,8 +63,9 @@ class StaffService
 
     /**
      * Delete user account.
+     *
      * @param $id
-     * @throws \Exception
+     * @throws \Throwable
      */
     public function remove($id)
     {

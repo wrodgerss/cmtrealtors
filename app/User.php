@@ -37,9 +37,14 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function getIsAdminAttribute()
+    public function isAdmin()
     {
         return $this->role == 'admin';
+    }
+
+    public function isProjectManager()
+    {
+        return $this->role == 'project_manager';
     }
 
     public function staff()

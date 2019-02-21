@@ -12,5 +12,5 @@ $factory->define(App\Task::class, function (Faker $faker) {
 });
 
 $factory->afterMaking(App\Task::class, function ($task) {
-    $task->property_id = App\User::whereRole('project_manager')->doesntHave('tasks')->first()->id;
+    $task->property_id = App\Property::doesntHave('tasks')->inRandomOrder()->first()->id;
 });

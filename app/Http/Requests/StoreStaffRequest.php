@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class StoreStaffRequest extends FormRequest
 {
@@ -14,7 +15,7 @@ class StoreStaffRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Gate::allows('profile');
     }
 
     /**
@@ -27,9 +28,7 @@ class StoreStaffRequest extends FormRequest
         return [
             'first_name' => 'required',
             'last_name' => 'required',
-            'phone' => 'required|numeric|unique:staffs,phone',
-            'role' => 'required|in:admin,project_manager,team_member',
-            'email' => 'email|unique:users,email'
+            'phone' => 'required|numeric|unique:staff',
         ];
     }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Domain\Events\AccountObserver;
+use App\User;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
-use Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,6 +17,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
+
+        User::observe(AccountObserver::class);
     }
 
     /**

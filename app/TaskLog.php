@@ -13,7 +13,7 @@ class TaskLog extends Model
         return $this->belongsTo(Task::class);
     }
 
-    public function user()
+    public function teamMember()
     {
         return $this->belongsTo(User::class);
     }

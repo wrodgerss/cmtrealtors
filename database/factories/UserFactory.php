@@ -34,10 +34,6 @@ $factory->state(App\User::class, 'team_member', [
     'role' => 'team_member',
 ]);
 
-$factory->afterCreating(App\User::class, function ($user, $faker) {
-    $user->staff()->save(factory(App\Staff::class)->make());
-});
-
 $factory->afterCreatingState(App\User::class, 'project_manager', function ($user, $faker) {
     $user->tasks()->saveMany(factory(App\Task::class, 2)->make());
 });

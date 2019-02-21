@@ -2,21 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Domain\ViewModels\StaffView;
+use App\Domain\ViewQueries\StaffQuery;
 use App\Http\Requests\UpdateStaffRequest;
 use Illuminate\Http\Request;
 use App\Domain\Services\StaffService;
 use App\Http\Requests\StoreStaffRequest;
+use Illuminate\Support\Facades\Auth;
 
 class StaffController extends Controller
 {
     /**
+     * StaffController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('profile')->except(['create', 'store']);
+    }
+
+    /**
      * Display a listing of the resource.
      *
-     * @param \App\Domain\ViewModels\StaffView $staffView
+     * @param \App\Domain\ViewQueries\StaffQuery $staffView
      * @return \Illuminate\Http\Response
      */
-    public function index(StaffView $staffView)
+    public function index(StaffQuery $staffView)
     {
         $users = $staffView->index();
         return view('staff.index', compact('users'));
@@ -26,9 +35,11 @@ class StaffController extends Controller
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
+     * @throws \Throwable
      */
     public function create()
     {
+        $this->authorize('profile');
         return view('staff.create');
     }
 
@@ -41,7 +52,7 @@ class StaffController extends Controller
      */
     public function store(StoreStaffRequest $request, StaffService $staffService)
     {
-        $staffService->create($request->all());
+        $staffService->create(Auth::id(), $request->all());
         session()->flash('success', 'Staff account has been created!');
         return redirect()->back();
     }
@@ -92,7 +103,7 @@ class StaffController extends Controller
      * @param  int  $id
      * @param  \App\Domain\Services\StaffService $staffService
      * @return \Illuminate\Http\Response
-     * @throws \Exception
+     * @throws \Throwable
      */
     public function destroy($id, StaffService $staffService)
     {

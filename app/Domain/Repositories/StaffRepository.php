@@ -8,68 +8,52 @@
 
 namespace App\Domain\Repositories;
 
-use App\User;
-use Illuminate\Support\Facades\Hash;
+use App\Staff;
+use Illuminate\Support\Facades\DB;
 
 
 class StaffRepository
 {
     /**
      * Save a user record.
-     * @param $data
+     *
+     * @param array $data
      */
     public function save($data)
     {
-        $user = User::create([
-            'email' => $data['email'],
-            'role' => $data['role'],
-            'password' => Hash::make('secret')
-        ]);
-
-        $user->staff()->create([
-            'first_name' => $data['first_name'],
-            'last_name' => $data['last_name'],
-            'phone' => $data['phone']
-        ]);
+        Staff::create($data);
     }
 
     /**
      * Fetch a user record.
-     * @param $id
+     *
+     * @param  $id
      * @return \App\User
      */
     public function get($id)
     {
-        return User::with('staff')->find($id);
+        return Staff::findOrFail($id);
     }
 
     /**
-     * Update user record
+     * Update user record.
+     *
      * @param $id
-     * @param $data
+     * @param array $data
      */
     public function update($id, $data)
     {
-        $user = $this->get($id);
-        $user->update([
-            'email' => $data['email'],
-            'password' => isset($data['password']) ? Hash::make($data['password']) : $user->getAuthPassword(),
-            'role' => $data['role'] ?? $user->role
-        ]);
-        $user->staff()->update([
-            'first_name' => $data['first_name'],
-            'last_name' => $data['last_name'],
-            'phone' => $data['phone']
-        ]);
+        DB::table('staff')->where('id', $id)->update($data);
     }
 
     /**
-     * Soft delete a user record
-     * @param $id
-     * @throws \Exception
+     * Soft delete a user record.
+     *
+     * @param  $id
+     * @throws \Throwable
      */
     public function delete($id)
     {
-        $this->get($id)->delete();
+        DB::table('staff')->delete($id);
     }
 }
